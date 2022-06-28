@@ -17,7 +17,7 @@ import Alert from './Alert';
 import Section from './Section';
 
 const FormLogIn = () => {
-  const { colors, setBearerToken } = useContext(TBContext);
+  const { colors, setBearerToken, setUserInfo } = useContext(TBContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [alertVisible, setAlertVisible] = useState(false);
@@ -44,6 +44,7 @@ const FormLogIn = () => {
               .getUserInfo(r.data.session.id)
               .then((res) => {
                 if (res.data.user) {
+                  setUserInfo(r.data.user);
                   AsyncStorage.setItem(
                     userInfoKey,
                     JSON.stringify(res.data.user),

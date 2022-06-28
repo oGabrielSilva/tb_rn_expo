@@ -60,8 +60,9 @@ const TBContextProvider = ({ children }: IPropsContext) => {
       colors,
       userInfo,
       handlerLogOut,
+      setUserInfo,
     }),
-    [bearerToken, darkMode, setMode, colors, userInfo],
+    [bearerToken, darkMode, setMode, colors, userInfo, setUserInfo],
   );
 
   return <TBContext.Provider value={state}>{children}</TBContext.Provider>;

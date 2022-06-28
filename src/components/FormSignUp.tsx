@@ -17,7 +17,7 @@ import Alert from './Alert';
 import Section from './Section';
 
 const FormSignUp = () => {
-  const { colors, setBearerToken } = useContext(TBContext);
+  const { colors, setBearerToken, setUserInfo } = useContext(TBContext);
   const [name, setName] = useState('');
   const [gender, setGender] = useState<'M' | 'F' | 'O'>('F');
   const [email, setEmail] = useState('');
@@ -44,6 +44,7 @@ const FormSignUp = () => {
         })
         .then((r) => {
           if (r.data.session.id) {
+            setUserInfo(r.data.user);
             AsyncStorage.setItem(userInfoKey, JSON.stringify(r.data.user)).then(
               () => {
                 AsyncStorage.setItem(
@@ -61,7 +62,7 @@ const FormSignUp = () => {
           }
         });
     }
-  }, [email, password, setBearerToken]);
+  }, [email, password, setBearerToken, gender]);
 
   return (
     <View>

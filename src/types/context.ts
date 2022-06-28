@@ -17,10 +17,10 @@ export interface ITBContext {
   darkMode: boolean;
   colors: IColors;
   setMode(): void;
-  // eslint-disable-next-line no-unused-vars
-  setBearerToken: (value: string) => void;
+  setBearerToken: (value: string) => void; //eslint-disable-line
   userInfo: IUserInfo;
   handlerLogOut(): void;
+  setUserInfo(value: IUserInfo): void; //eslint-disable-line
 }
 
 export interface IPropsContext {
