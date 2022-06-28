@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Platform,
 } from 'react-native';
 import api from '../api/api';
 import { TBContext } from '../context';
@@ -34,25 +35,23 @@ const FormSignUp = () => {
       setAlertVisible(true);
       api()
         .account()
-        .signIn({ email: email.trim(), password: password.trim() })
+        .signup({
+          email: email.trim(),
+          password: password.trim(),
+          gender,
+          name: name.trim(),
+          device: Platform.OS,
+        })
         .then((r) => {
           if (r.data.session.id) {
-            api()
-              .account()
-              .getUserInfo(r.data.session.id)
-              .then((res) => {
-                if (res.data.user) {
-                  AsyncStorage.setItem(
-                    userInfoKey,
-                    JSON.stringify(res.data.user),
-                  ).then(() => {
-                    AsyncStorage.setItem(
-                      bearerTokenKey,
-                      'Bearer '.concat(r.data.session.id),
-                    ).then(() => setBearerToken(r.data.session.id));
-                  });
-                }
-              });
+            AsyncStorage.setItem(userInfoKey, JSON.stringify(r.data.user)).then(
+              () => {
+                AsyncStorage.setItem(
+                  bearerTokenKey,
+                  'Bearer '.concat(r.data.session.id),
+                ).then(() => setBearerToken(r.data.session.id));
+              },
+            );
           }
         })
         .catch((err) => {

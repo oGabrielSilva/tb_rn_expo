@@ -1,4 +1,3 @@
-import 'react-native-gesture-handler';
 import React, { useCallback, useEffect, useState } from 'react';
 import { loadAsync } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
@@ -20,11 +19,11 @@ const App = () => {
         'Montserrat-Bold': F.MontserratBoldFont,
         'Montserrat-Medium': F.MontserratMediumFont,
       });
-
-      setFontsLoaded(true);
     };
 
-    func().finally(() => setFontsLoaded(true));
+    func()
+      .then(() => setFontsLoaded(true))
+      .finally(() => setFontsLoaded(true));
   }, []);
 
   const onLayoutRootView = useCallback(async () => {

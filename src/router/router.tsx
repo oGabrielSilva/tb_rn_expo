@@ -1,24 +1,29 @@
-import React, { useContext } from 'react';
+import React, { useContext, useLayoutEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import {
-  createNativeStackNavigator,
-  NativeStackNavigationOptions,
-} from '@react-navigation/native-stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TBContext } from '../context';
 import LogIn from '../screens/LogIn';
-import Home from '../screens/Home';
-import SplashScreen from '../screens/SplashScreen';
 import { IRootStackParamsList } from '../types/navigation';
 import SignUp from '../screens/SignUp';
+import SplashScreen from '../screens/SplashScreen';
+import { bearerTokenKey } from '../utils/keys';
+import Home from '../screens/Home';
 
-const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator<IRootStackParamsList>();
-const screenOptions: NativeStackNavigationOptions = { headerShown: false };
 
 const Router = () => {
   const { bearerToken, darkMode, colors } = useContext(TBContext);
+  const [loading, setLoading] = useState(false);
+
+  useLayoutEffect(() => {
+    const func = () => AsyncStorage.getItem(bearerTokenKey);
+
+    func()
+      .then()
+      .finally(() => setLoading(true));
+  }, []);
 
   return (
     <>
@@ -27,17 +32,22 @@ const Router = () => {
         backgroundColor={colors.primary}
       />
       <NavigationContainer>
-        {(!bearerToken && (
-          <Stack.Navigator screenOptions={screenOptions}>
-            <Stack.Screen name="LogIn" component={LogIn} />
-            <Stack.Screen name="SignUp" component={SignUp} />
-          </Stack.Navigator>
-        )) || (
-          <Drawer.Navigator>
-            <Drawer.Screen name="Home" component={Home} />
-            <Drawer.Screen name="Article" component={SplashScreen} />
-          </Drawer.Navigator>
-        )}
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          {(!loading && (
+            <Stack.Screen name="SplashScreen" component={SplashScreen} />
+          )) || (
+            <Stack.Group>
+              {(bearerToken && (
+                <Stack.Screen name="Home" component={Home} />
+              )) || (
+                <>
+                  <Stack.Screen name="LogIn" component={LogIn} />
+                  <Stack.Screen name="SignUp" component={SignUp} />
+                </>
+              )}
+            </Stack.Group>
+          )}
+        </Stack.Navigator>
       </NavigationContainer>
     </>
   );

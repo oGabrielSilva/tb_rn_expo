@@ -3,3 +3,8 @@ export interface ISignIn {
   password: string;
   device?: string;
 }
+
+export interface ISignUp extends ISignIn {
+  name: string;
+  gender: 'F' | 'M' | 'O';
+}

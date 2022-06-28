@@ -19,7 +19,22 @@ export interface IPropsAlert extends IProps {
   qtButtons?: 1 | 2;
 }
 
+export type ISplashScreenScreenProps = NativeStackScreenProps<
+  IRootStackParamsList,
+  'SplashScreen'
+>;
+
 export type ILogInScreenProps = NativeStackScreenProps<
   IRootStackParamsList,
   'LogIn'
 >;
+
+export interface IMenuModalProps {
+  visible: boolean;
+  onRequestClose(): void;
+}
+
+export interface IUserIconProps {
+  handlerMenuShow?(): void;
+  click?: boolean;
+}

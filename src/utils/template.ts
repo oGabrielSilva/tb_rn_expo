@@ -1,3 +1,7 @@
+import av from '../assets/img/avatar.png';
+
+export const avatar = av;
+
 export const colorsDark = {
   primary: '#010518',
   secundary: '#ffaa00',

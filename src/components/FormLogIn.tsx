@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useCallback, useContext, useRef, useState } from 'react';
 import {
   ActivityIndicator,
+  Platform,
   StyleSheet,
   Text,
   TextInput,
@@ -31,7 +32,11 @@ const FormLogIn = () => {
       setAlertVisible(true);
       api()
         .account()
-        .signIn({ email: email.trim(), password: password.trim() })
+        .signIn({
+          email: email.trim(),
+          password: password.trim(),
+          device: Platform.OS,
+        })
         .then((r) => {
           if (r.data.session.id) {
             api()
